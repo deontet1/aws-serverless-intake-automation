@@ -450,7 +450,6 @@
       font-size: 1rem;
     }
 
-    /* Single column — every card gets the full width */
     .proof-grid {
       display: flex;
       flex-direction: column;
@@ -471,7 +470,6 @@
       transform: translateY(-3px);
     }
 
-    /* Image wrapper — wider aspect ratio so screenshots aren't too tall */
     .proof-img-wrap {
       width: 100%;
       aspect-ratio: 21/9;
@@ -854,7 +852,7 @@
 
     <div class="arch-desc reveal">
       <p>
-        The pipeline is fully event-driven — <strong>nothing runs unless something happens.</strong> A PDF upload to S3 fires a <code>PUT</code> event that invokes Lambda #1, which starts an asynchronous Textract job and passes the <code>TextractJobComplete</code> SNS topic as its notification destination. When Textract finishes, it publishes a completion message to SNS, which triggers Lambda #2. Lambda #2 paginates through all Textract result blocks using <code>NextToken</code>, then writes the extracted text, Job ID, and timestamp to DynamoDB. Both Lambda functions emit structured logs to dedicated CloudWatch log groups, capturing execution details, Textract Job IDs, extracted line counts, and any errors — providing full observability across the pipeline with zero additional infrastructure.
+        The pipeline is fully event-driven. <strong>Nothing runs unless something happens.</strong> A PDF upload to S3 fires a <code>PUT</code> event that invokes Lambda #1, which starts an asynchronous Textract job and passes the <code>TextractJobComplete</code> SNS topic as its notification destination. When Textract finishes, it publishes a completion message to SNS, which triggers Lambda #2. Lambda #2 paginates through all Textract result blocks using <code>NextToken</code>, then writes the extracted text, Job ID, and timestamp to DynamoDB. Both Lambda functions emit structured logs to dedicated CloudWatch log groups, capturing execution details, Textract Job IDs, extracted line counts, and any errors, providing full observability across the pipeline with zero additional infrastructure.
       </p>
     </div>
 
@@ -970,7 +968,7 @@
         <div class="proof-card-body">
           <div class="proof-card-tag">DynamoDB · Record Detail</div>
           <div class="proof-card-title">Extracted Record Detail</div>
-          <div class="proof-card-desc">The full extracted text from a client intake form — including name, DOB, address, and reason for visit — stored as structured data keyed by file name.</div>
+          <div class="proof-card-desc">The full extracted text from a client intake form, including name, DOB, address, and reason for visit, stored as structured data keyed by file name.</div>
         </div>
       </div>
 
@@ -1032,17 +1030,17 @@
           <tr>
             <td>S3 Bucket</td>
             <td>client-intake-forms-bucket</td>
-            <td>Stores uploaded PDFs — entry point of the pipeline</td>
+            <td>Stores uploaded PDFs and serves as the entry point of the pipeline</td>
           </tr>
           <tr>
             <td>Lambda Function</td>
             <td>StartTextractJob</td>
-            <td>Triggered by S3 PUT; starts async Textract job</td>
+            <td>Triggered by S3 PUT and starts the async Textract job</td>
           </tr>
           <tr>
             <td>Lambda Function</td>
             <td>ProcessTextractResults</td>
-            <td>Triggered by SNS; retrieves results and writes to DynamoDB</td>
+            <td>Triggered by SNS and retrieves results then writes to DynamoDB</td>
           </tr>
           <tr>
             <td>SNS Topic</td>

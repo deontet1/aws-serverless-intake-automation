@@ -852,7 +852,7 @@
 
     <div class="arch-desc reveal">
       <p>
-        The pipeline is fully event-driven. <strong>Nothing runs unless something happens.</strong> A PDF upload to S3 fires a <code>PUT</code> event that invokes Lambda #1, which starts an asynchronous Textract job and passes the <code>TextractJobComplete</code> SNS topic as its notification destination. When Textract finishes, it publishes a completion message to SNS, which triggers Lambda #2. Lambda #2 paginates through all Textract result blocks using <code>NextToken</code>, then writes the extracted text, Job ID, and timestamp to DynamoDB. Both Lambda functions emit structured logs to dedicated CloudWatch log groups, capturing execution details, Textract Job IDs, extracted line counts, and any errors, providing full observability across the pipeline with zero additional infrastructure.
+        The pipeline is fully event-driven. <strong>Nothing runs unless something happens.</strong> A PDF upload to S3 fires a <code>PUT</code> event that invokes Lambda #1, which starts an asynchronous Textract job and passes the <code>TextractJobComplete</code> SNS topic as its notification destination. When Textract finishes, it publishes a completion message to SNS, which triggers Lambda #2. Lambda #2 result retreivals through all Textract result blocks using <code>NextToken</code>, then writes the extracted text, Job ID, and timestamp to DynamoDB. Both Lambda functions emit structured logs to dedicated CloudWatch log groups, capturing execution details, Textract Job IDs, extracted line counts, and any errors, providing full observability across the pipeline with zero additional infrastructure.
       </p>
     </div>
 
